@@ -4,8 +4,12 @@ CXX = g++
 CXXFLAGS = -std=c++20 -I $(INCDIR) -Wall
 LDFLAGS = 
 
-SRCS = ./src/main.cpp ./src/my_module.cpp 
-OBJS = $(patsubst ./src/%.cpp,./build/%.o,$(SRCS))
+SRCDIR = ./src
+BUILDDIR = ./build
+
+SRCS = $(wildcard $(SRCDIR)/*.cpp)
+OBJS = $(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.o,$(SRCS))
+
 TARGET = main
 
 .PHONY: all build clean run
@@ -15,7 +19,9 @@ all: build
 run: $(TARGET)
 	./$(TARGET)
 
-build: $(OBJS)
+build: $(TARGET)
+
+$(TARGET): $(OBJS)
 	$(CXX) $^ -o $(TARGET) $(LDFLAGS)
 
 ./build/%.o: ./src/%.cpp
