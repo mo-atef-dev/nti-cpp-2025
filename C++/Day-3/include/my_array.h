@@ -14,9 +14,6 @@ class array
     array& operator=(const array&);
     T& operator[](int index);
 
-    auto x = a[5];
-    a[5] = 3;
-
     int GetSize();
 
     private:
