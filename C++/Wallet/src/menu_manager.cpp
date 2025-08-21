@@ -12,6 +12,11 @@ MenuManager::MenuManager(const Menu *firstMenu) : m_currentMenu(firstMenu)
 
 void MenuManager::ChangeMenu(const Menu *newMenu)
 {
+    /**
+    * There is a problem related to this implementation.
+    * Can you detect it?
+    */
+    
     delete m_currentMenu; // Delete the old Menu pointed at by m_currentMenu
     m_currentMenu = newMenu; // Set the new Menu
 }
@@ -22,7 +27,7 @@ void MenuManager::Run()
 
     /**
      * This is the main loop of the application.
-     * It wil keep running until Display returns
+     * It will keep running until Display returns
      * MenuResult::Exit.
      */
     while (result != MenuResult::Exit)
