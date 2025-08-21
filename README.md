@@ -20,8 +20,12 @@ You can find the training files in the folder C++.
 5. :warning: Make sure that you add the `-g` compiler flag in the Makefile as shown in the image
 ![Step 4](Images/step-4.png)
 
-6. Clean and build your program
-![Step 5](Images/step-5.png)
+6. :warning: You have to clean and build your program again after adding the flag
+```console
+~$> make clean
+~$> make build
+```
+    
 
 7. Add a breakpoint and start debugging using the `(gdb) Launch` option to test if the debugger is working
 ![Step 6](Images/step-6.png)
