@@ -1,11 +1,12 @@
 #include "menu_manager.h"
 
-MenuManager::MenuManager()
+MenuManager::MenuManager(Application& application) : m_application{application}
 {
     m_currentMenu.reset(new WelcomeMenu(*this));
 }
 
-MenuManager::MenuManager(const Menu *firstMenu) : m_currentMenu(firstMenu)
+MenuManager::MenuManager(const Menu *firstMenu, Application& application)
+: m_currentMenu{firstMenu}, m_application{application}
 {
 
 }

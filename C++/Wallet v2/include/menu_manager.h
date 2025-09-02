@@ -4,12 +4,13 @@
 #include <memory>
 
 class Menu;
+class Application;
 
 class MenuManager
 {
     public:
-    MenuManager();
-    MenuManager(const Menu* firstMenu);
+    MenuManager(Application& application);
+    MenuManager(const Menu* firstMenu, Application& application);
     
     void ChangeMenu(const Menu* newMenu);
     void Run();
@@ -21,4 +22,9 @@ class MenuManager
      * to follow RAII principle
      */
     std::unique_ptr<const Menu> m_currentMenu;
+
+    /**
+     * This is a reference to the application object
+     */
+    Application& m_application;
 };
