@@ -1,8 +1,7 @@
-#include "application.h"
+#include "demos.h"
+
 
 int main()
 {
-    Application app{};
-
-    app.Run();
+    user_repository_demo();
 }
