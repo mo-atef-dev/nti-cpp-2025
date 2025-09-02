@@ -52,7 +52,7 @@ CSVFile CSVReader::ReadFile(const std::string &path)
         lineStream.str(lineString);
 
         // For each header add a value in the CSV row
-        for(int i = 0; i < headers.size(); i++)
+        for(size_t i = 0; i < headers.size(); i++)
         {
             if(!lineStream.good())
                 throw bad_file_format{"Row doesn't contain all columns"};
@@ -83,6 +83,10 @@ void CSVRow::InsertValue(const std::string &column, const std::string &value)
     m_rowData.insert({column, value});
 }
 
+CSVFile::CSVFile()
+{
+}
+
 CSVFile::CSVFile(std::vector<std::string> headers) : m_headers{headers}
 {
 }
@@ -90,6 +94,11 @@ CSVFile::CSVFile(std::vector<std::string> headers) : m_headers{headers}
 CSVRow &CSVFile::operator[](int index)
 {
     return m_data[index];
+}
+
+size_t CSVFile::GetNumberOfRows()
+{
+    return m_data.size();
 }
 
 void CSVFile::DeleteRow(int index)

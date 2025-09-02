@@ -28,9 +28,11 @@ class CSVRow
 class CSVFile
 {
     public:
+    CSVFile();
     CSVFile(std::vector<std::string> headers);
 
     CSVRow& operator[](int index);
+    size_t GetNumberOfRows();
 
     void DeleteRow(int index);
     void AppendRow(CSVRow row);
