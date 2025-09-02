@@ -2,7 +2,7 @@
 
 MenuManager::MenuManager()
 {
-    m_currentMenu = new WelcomeMenu(*this);
+    m_currentMenu.reset(new WelcomeMenu(*this));
 }
 
 MenuManager::MenuManager(const Menu *firstMenu) : m_currentMenu(firstMenu)
@@ -16,9 +16,13 @@ void MenuManager::ChangeMenu(const Menu *newMenu)
     * There is a problem related to this implementation.
     * Can you detect it?
     */
-    
-    delete m_currentMenu; // Delete the old Menu pointed at by m_currentMenu
-    m_currentMenu = newMenu; // Set the new Menu
+
+    /**
+     * The reset function of std::unique_ptr automatically
+     * releases the previously owned data and takes ownership
+     * of the memory pointed by the given pointer
+     */
+    m_currentMenu.reset(newMenu);
 }
 
 void MenuManager::Run()

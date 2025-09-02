@@ -1,6 +1,7 @@
 #pragma once
 
 #include "menu.h"
+#include <memory>
 
 class Menu;
 
@@ -14,5 +15,10 @@ class MenuManager
     void Run();
 
     private:
-    const Menu* m_currentMenu;
+    /**
+     * I have changed the currentMenu member to
+     * be a unique pointer instead of a raw pointer
+     * to follow RAII principle
+     */
+    std::unique_ptr<const Menu> m_currentMenu;
 };
