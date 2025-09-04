@@ -33,7 +33,8 @@ CSVFile CSVReader::ReadFile(const std::string &path)
 
     // Read the headers and place them in a vector
     std::vector<std::string> headers;
-    while(!lineStream.eof())
+    std::string header;
+    while(std::getline(lineStream, header, ','))
     {
         std::string header;
         std::getline(lineStream, header, ',');
@@ -43,11 +44,10 @@ CSVFile CSVReader::ReadFile(const std::string &path)
 
     // Now until we reach the end of the file keep reading rows
     CSVFile out{headers};
-    while(!fileStream.eof())
+    while(std::getline(fileStream, lineString))
     {
         CSVRow row;
 
-        std::getline(fileStream, lineString);
         lineStream.clear();
         lineStream.str(lineString);
 
