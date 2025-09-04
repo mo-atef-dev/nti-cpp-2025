@@ -8,6 +8,7 @@
 #include "transaction_csv_repository.h"
 
 class LoginService;
+class TransactionService;
 
 class Application
 {
@@ -32,6 +33,7 @@ class Application
     TransactionRepository* GetTransactionRepository();
 
     std::unique_ptr<LoginService> GetLoginService();
+    std::unique_ptr<TransactionService> GetTransactionService();
 
     User* GetCurrentUser();
     void SetCurrentUser(User* user);

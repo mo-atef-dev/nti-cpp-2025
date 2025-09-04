@@ -1,5 +1,6 @@
 #include "application.h"
 #include "login_service.h"
+#include "transaction_service.h"
 
 /**
  * Sending (*this) as an argument in the initialization is dangerous
@@ -30,8 +31,12 @@ TransactionRepository* Application::GetTransactionRepository()
 
 std::unique_ptr<LoginService> Application::GetLoginService()
 {
-    auto ptr = std::unique_ptr<LoginService>{new LoginService(*this)};
-    return ptr;
+    return std::unique_ptr<LoginService>{new LoginService{*this}};
+}
+
+std::unique_ptr<TransactionService> Application::GetTransactionService()
+{
+    return std::unique_ptr<TransactionService>{new TransactionService{*this}};
 }
 
 User *Application::GetCurrentUser()
