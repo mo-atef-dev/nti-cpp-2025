@@ -36,9 +36,6 @@ CSVFile CSVReader::ReadFile(const std::string &path)
     std::string header;
     while(std::getline(lineStream, header, ','))
     {
-        std::string header;
-        std::getline(lineStream, header, ',');
-
         headers.push_back(header);
     }
 
@@ -71,6 +68,58 @@ CSVFile CSVReader::ReadFile(const std::string &path)
 
 void CSVWriter::WriteFile(const std::string &path, const CSVFile &file)
 {
+    /**
+     * The std::ios::truc flag indicates that we want
+     * to overwrite the file if it already exists
+     * 
+     * This is to make sure that we write to an empty
+     * file each time
+     */
+    std::ofstream fileStream{path, std::ios::trunc};
+
+    /**
+     * Detect errors on the stream and throw exceptions
+     */
+    if(fileStream.fail())
+        throw std::ios_base::failure{"Failed to open the file"};
+    if(fileStream.bad())
+        throw std::bad_exception{};
+
+    auto headers = file.GetHeaders();
+
+    // Write the headers
+    for(size_t i = 0; i < headers.size(); i++)
+    {
+        fileStream << headers[i];
+
+        if(i == headers.size() - 1) // If this is the last header write a new line after it
+            fileStream << '\n';
+        else                    // else write a comma between headers
+            fileStream << ',';
+    }
+
+    // Write the data rows of the file
+    for(size_t r = 0; r < file.GetNumberOfRows(); r++)
+    {
+        // Write the columns in the data row
+        for(size_t c = 0; c < headers.size(); c++)
+        {
+            fileStream << file[r][headers[c]];
+
+            if(c == headers.size() - 1) // If this is the last header write a new line after it
+                fileStream << '\n';
+            else                    // else write a comma between headers
+                fileStream << ',';
+        }
+    }
+
+    /**
+     * At this stage if there are any errors it means
+     * that the data may be corrupted so we must inform
+     * the client
+     */
+    if(fileStream.fail() || fileStream.bad())
+        throw std::runtime_error{"Error while saving the file, the data maybe corrupted"};
 }
 
 std::string &CSVRow::operator[](const std::string &column)
