@@ -1,4 +1,6 @@
 #include "menu.h"
+#include "application.h"
+#include "login_service.h"
 
 Menu::Menu(MenuManager& menuManager) : m_menuManager(menuManager)
 {
@@ -39,7 +41,7 @@ MenuResult WelcomeMenu::Display() const
 
 LoginMenu::LoginMenu(MenuManager &menuManager) : Menu(menuManager) 
 {
-
+    m_loginService = m_menuManager.GetApplication()->GetLoginService();
 }
 
 MenuResult LoginMenu::Display() const
@@ -54,7 +56,7 @@ MenuResult LoginMenu::Display() const
     std::cout << "Password: ";
     std::cin >> password;
 
-    if(userName == "admin" && password == "admin")
+    if(m_loginService->Login(userName, password))
     {
         m_menuManager.ChangeMenu(new OptionsMenu(m_menuManager));    
         return MenuResult::ClearAndContinue;
@@ -71,14 +73,12 @@ MenuResult LoginMenu::Display() const
     switch(choice)
     {
         case 'l':
-        m_menuManager.ChangeMenu(new LoginMenu(m_menuManager));
+        // Do nothing
         break;
         case 'q':
         return MenuResult::Exit;
         break;
     }
-
-    m_menuManager.ChangeMenu(new WelcomeMenu(m_menuManager));
 
     return MenuResult::ClearAndContinue;
 }
@@ -91,6 +91,9 @@ MenuResult OptionsMenu::Display() const
 {
     char choice;
 
+    const std::string_view userName = m_menuManager.GetApplication()->GetCurrentUser()->GetName();
+
+    std::cout << "Hello " << userName << std::endl;
     std::cout << "What do you want to do?" << std::endl << std::endl;
 
     std::cout << "(S) Account statement" << std::endl;
@@ -128,5 +131,5 @@ MenuResult OptionsMenu::Display() const
         break;
     }
 
-    return MenuResult::Continue;
+    return MenuResult::ClearAndContinue;
 }

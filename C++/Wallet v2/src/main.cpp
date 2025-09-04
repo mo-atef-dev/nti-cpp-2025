@@ -1,7 +1,9 @@
 #include "demos.h"
-
+#include "application.h"
 
 int main()
 {
-    user_repository_demo();
+    Application app{"user_sample.csv", "transaction_sample.csv"};
+
+    app.Run();
 }

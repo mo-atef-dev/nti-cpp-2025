@@ -4,6 +4,10 @@
 #include <memory>
 
 #include "menu_manager.h"
+#include "user_csv_repository.h"
+#include "transaction_csv_repository.h"
+
+class LoginService;
 
 class Application
 {
@@ -20,7 +24,24 @@ class Application
      */
     void Run();
 
+    /**
+     * These are function to get references to the different
+     * application resources and services
+     */
+    UserRepository* GetUserRepository();
+    TransactionRepository* GetTransactionRepository();
+
+    std::unique_ptr<LoginService> GetLoginService();
+
+    User* GetCurrentUser();
+    void SetCurrentUser(User* user);
+
     MenuManager& GetMenuManager();
     private:
     MenuManager m_menuManager;
+
+    std::unique_ptr<User> m_currentUser;
+
+    std::unique_ptr<UserRepository> m_userRepository;
+    std::unique_ptr<TransactionRepository> m_transactionRepository;
 };

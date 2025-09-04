@@ -11,6 +11,11 @@ MenuManager::MenuManager(const Menu *firstMenu, Application& application)
 
 }
 
+Application *MenuManager::GetApplication()
+{
+    return &m_application;
+}
+
 void MenuManager::ChangeMenu(const Menu *newMenu)
 {
     /**

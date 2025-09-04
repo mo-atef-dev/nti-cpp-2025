@@ -12,6 +12,8 @@ class MenuManager
     MenuManager(Application& application);
     MenuManager(const Menu* firstMenu, Application& application);
     
+    Application* GetApplication();
+
     void ChangeMenu(const Menu* newMenu);
     void Run();
 

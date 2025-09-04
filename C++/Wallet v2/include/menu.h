@@ -1,7 +1,9 @@
 #pragma once
 #include <iostream>
 #include "menu_manager.h"
+#include <memory>
 
+class LoginService;
 class MenuManager; // Forward declare the class MenuManager
 
 enum class MenuResult {Continue, ClearAndContinue, Exit};
@@ -43,6 +45,9 @@ class LoginMenu : public Menu
     LoginMenu(MenuManager& menuManager);
 
     MenuResult Display() const override;
+
+    private:
+    std::unique_ptr<LoginService> m_loginService;
 };
 
 class OptionsMenu : public Menu
