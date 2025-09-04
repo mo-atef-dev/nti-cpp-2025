@@ -1,6 +1,8 @@
 #include "menu.h"
 #include "application.h"
 #include "login_service.h"
+#include "transaction_service.h"
+#include <iomanip>
 
 Menu::Menu(MenuManager& menuManager) : m_menuManager(menuManager)
 {
@@ -115,7 +117,7 @@ MenuResult OptionsMenu::Display() const
         // Should go to balance menu here
         break;
         case 't':
-        // Should go to transaction menu here
+        m_menuManager.ChangeMenu(new TransactionMenu(m_menuManager));
         break;
         case 'w':
         // Should go to withdraw menu here
@@ -128,6 +130,64 @@ MenuResult OptionsMenu::Display() const
         break;
         case 'q':
         return MenuResult::Exit;
+        break;
+    }
+
+    return MenuResult::ClearAndContinue;
+}
+
+TransactionMenu::TransactionMenu(MenuManager &menuManager) : Menu(menuManager)
+{
+    m_transactionService = m_menuManager.GetApplication()->GetTransactionService();
+}
+
+MenuResult TransactionMenu::Display() const
+{
+    std::string currentUserName = m_menuManager.GetApplication()->GetCurrentUser()->GetName();
+    std::string destUserName;
+    double amount;
+
+    std::cout << "Enter the user you would like to transfer money to: ";
+    std::cin >> destUserName;
+
+    std::cout << "Enter the amount you want to transfer: ";
+    std::cin >> amount;
+
+    std::cout << "You are requestion the following transaction\n";
+    std::cout << std::setw(10) << "## To user: " << destUserName << '\n';
+    std::cout << std::setw(10) << "## Amount: " << amount << "\n\n";
+
+    char c;
+    std::cout << "(C) Confirm\n";
+    std::cout << "(Any other key) Go back and cancel\n";
+    std::cin >> c;
+
+    TransactionResult result;
+
+    switch(c)
+    {
+        case 'c':
+        result = m_transactionService->TransferMoney(currentUserName, destUserName, amount);
+        break;
+        default:
+        m_menuManager.ChangeMenu(new OptionsMenu{m_menuManager});
+        return MenuResult::ClearAndContinue;
+        break;
+    }
+
+    std::cout << result.message << '\n';
+
+    std::cout << "Would you like to perform another transaction?\n";
+    std::cout << "(Y) Yes\n";
+    std::cout << "(Any other key) Go back and cancel\n";
+    std::cin >> c;
+
+    switch(c)
+    {
+        case 'c' || 'C':
+        break;
+        default:
+        m_menuManager.ChangeMenu(new OptionsMenu{m_menuManager});
         break;
     }
 

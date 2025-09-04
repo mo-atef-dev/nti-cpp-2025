@@ -3,7 +3,6 @@
 #include "menu_manager.h"
 #include <memory>
 
-class LoginService;
 class MenuManager; // Forward declare the class MenuManager
 
 enum class MenuResult {Continue, ClearAndContinue, Exit};
@@ -39,6 +38,8 @@ class WelcomeMenu : public Menu
     
 };
 
+class LoginService; // Forward declaration
+
 class LoginMenu : public Menu
 {
     public:
@@ -56,4 +57,17 @@ class OptionsMenu : public Menu
     OptionsMenu(MenuManager& menuManager);
 
     MenuResult Display() const override;
+};
+
+class TransactionService; // Forward declaration
+
+class TransactionMenu : public Menu
+{
+    public:
+    TransactionMenu(MenuManager& menuManager);
+
+    MenuResult Display() const override;
+
+    private:
+    std::unique_ptr<TransactionService> m_transactionService;
 };
