@@ -18,6 +18,7 @@ class CSVRow
 {
     public:
     std::string& operator[](const std::string& column);
+    const std::string& operator[](const std::string& column) const;
 
     void InsertValue(const std::string& column, const std::string& value);
 
@@ -32,7 +33,10 @@ class CSVFile
     CSVFile(std::vector<std::string> headers);
 
     CSVRow& operator[](int index);
-    size_t GetNumberOfRows();
+    const CSVRow& operator[](int index) const;
+
+    std::vector<std::string> GetHeaders() const;
+    size_t GetNumberOfRows() const;
 
     void DeleteRow(int index);
     void AppendRow(CSVRow row);

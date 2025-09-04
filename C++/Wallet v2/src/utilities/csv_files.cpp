@@ -78,6 +78,11 @@ std::string &CSVRow::operator[](const std::string &column)
     return m_rowData.at(column);
 }
 
+const std::string &CSVRow::operator[](const std::string &column) const
+{
+    return m_rowData.at(column);
+}
+
 void CSVRow::InsertValue(const std::string &column, const std::string &value)
 {
     m_rowData.insert({column, value});
@@ -96,7 +101,17 @@ CSVRow &CSVFile::operator[](int index)
     return m_data[index];
 }
 
-size_t CSVFile::GetNumberOfRows()
+const CSVRow &CSVFile::operator[](int index) const
+{
+    return m_data[index];
+}
+
+std::vector<std::string> CSVFile::GetHeaders() const
+{
+    return m_headers;
+}
+
+size_t CSVFile::GetNumberOfRows() const
 {
     return m_data.size();
 }
