@@ -2,7 +2,7 @@
 #include "time_strings.h"
 #include "repository_exceptions.h"
 
-TransactionCSVRepository::TransactionCSVRepository(const std::string filePath)
+TransactionCSVRepository::TransactionCSVRepository(const std::string filePath) : m_filePath{filePath}
 {
     m_file = CSVReader::ReadFile(filePath);
 }
@@ -56,7 +56,16 @@ void TransactionCSVRepository::Insert(const Transaction& transaction)
 {
     CSVRow row{};
 
-    row.InsertValue(COLUMN_ID, std::to_string(transaction.m_id));
+    int id = 0;
+    if(m_file.GetNumberOfRows() == 0)
+        id = 0; // Set the id to 0 if there are no rows
+    else
+    {
+        // Get the last id and increment by 1
+        id = std::stoi(m_file[m_file.GetNumberOfRows() - 1][COLUMN_ID]) + 1;
+    }
+
+    row.InsertValue(COLUMN_ID, std::to_string(id));
     row.InsertValue(COLUMN_SRC_USER_ID, std::to_string(transaction.m_sourceUserId));
     row.InsertValue(COLUMN_DEST_USER_ID, std::to_string(transaction.m_destUserId));
     row.InsertValue(COLUMN_AMOUNT, std::to_string(transaction.m_amount));
@@ -96,4 +105,9 @@ void TransactionCSVRepository::DeleteById(int id)
             return;
         }
     }
+}
+
+void TransactionCSVRepository::Sync()
+{
+    CSVWriter::WriteFile(m_filePath, m_file);
 }

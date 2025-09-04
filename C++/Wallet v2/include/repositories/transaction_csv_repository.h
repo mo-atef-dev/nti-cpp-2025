@@ -17,8 +17,11 @@ class TransactionCSVRepository : public TransactionRepository
 
     void DeleteById(int id) override;
 
+    void Sync() override;
+
     private:
     CSVFile m_file;
+    const std::string m_filePath;
 
     /**
      * Here I am using constant strings for the names

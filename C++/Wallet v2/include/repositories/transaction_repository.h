@@ -12,4 +12,6 @@ class TransactionRepository
     virtual void Update(int id, const Transaction& transaction) = 0;
 
     virtual void DeleteById(int id) = 0;
+
+    virtual void Sync() = 0;
 };
