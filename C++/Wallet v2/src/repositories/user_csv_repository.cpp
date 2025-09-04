@@ -1,7 +1,7 @@
 #include "user_csv_repository.h"
 #include "repository_exceptions.h"
 
-UserCSVRepository::UserCSVRepository(const std::string filePath)
+UserCSVRepository::UserCSVRepository(const std::string filePath) : m_filePath{filePath}
 {
     m_file = CSVReader::ReadFile(filePath);
 }
@@ -42,6 +42,25 @@ User UserCSVRepository::GetByName(std::string name)
     throw not_found{"Requested User not found in file"};
 }
 
+void UserCSVRepository::Update(int id, User updatedUser)
+{
+    for(size_t i = 0; i < m_file.GetNumberOfRows(); i++)
+    {
+        auto currentId = std::stoi(m_file[i][COLUMN_ID]);
+
+        if(currentId == id)
+        {
+            m_file[i][COLUMN_NAME] = updatedUser.GetName();
+            m_file[i][COLUMN_BALANCE] = std::to_string(updatedUser.GetBalance());
+            m_file[i][COLUMN_PASSWORD] = updatedUser.GetPassword();
+
+            return;
+        }
+    }
+
+    throw not_found{"Requested User not found in file"};
+}
+
 void UserCSVRepository::DeleteById(int id)
 {
     for(size_t i = 0; i < m_file.GetNumberOfRows(); i++)
@@ -54,4 +73,9 @@ void UserCSVRepository::DeleteById(int id)
             return;
         }
     }
+}
+
+void UserCSVRepository::Sync()
+{
+    CSVWriter::WriteFile(m_filePath, m_file);
 }

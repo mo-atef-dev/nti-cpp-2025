@@ -8,5 +8,9 @@ class UserRepository
     virtual User GetById(int id) = 0;
     virtual User GetByName(std::string name) = 0;
 
+    virtual void Update(int id, User updatedUser) = 0;
+
     virtual void DeleteById(int id) = 0;
+
+    virtual void Sync() = 0;
 };

@@ -16,6 +16,8 @@ class User
     double GetBalance();
     const std::string GetPassword();
 
+    void SetBalance(double amount);
+
     private:
     int m_id;
     std::string m_name;

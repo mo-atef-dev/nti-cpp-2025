@@ -11,10 +11,15 @@ class UserCSVRepository : public UserRepository
     User GetById(int id) override;
     User GetByName(std::string name) override;
 
+    void Update(int id, User updatedUser) override;
+
     void DeleteById(int id) override;
+
+    void Sync() override;
 
     private:
     CSVFile m_file;
+    const std::string m_filePath;
 
     /**
      * Here I am using constant strings for the names
